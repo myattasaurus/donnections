@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#dontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#table {
+    display: flex;
+    flex-direction: column;
+    height: 90vmin;
+    width: 90vmin;
+    gap: 1em;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    height: 25%;
+}
+
+.cell {
+    flex: 1;
+    height: 100%;
+    background-color: rgb(239, 237, 227);
+    color: black;
+    border-radius: 7%;
+    padding: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
