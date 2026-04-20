@@ -11,29 +11,41 @@
 <body>
     <div id="dontainer">
         <div id="table">
-            <div class="row">
-                <div class="cell">APPLE</div>
-                <div class="cell">BANANA</div>
-                <div class="cell">CHERRY</div>
-                <div class="cell">DATE</div>
+            <div class="row" data-row="0">
+                <div class="cell" data-col="0"><input type="text" value="APPLE"></div>
+                <div class="cell" data-col="1"><input type="text" value="BANANA"></div>
+                <div class="cell" data-col="2"><input type="text" value="CHERRY"></div>
+                <div class="cell" data-col="3"><input type="text" value="DATE"></div>
             </div>
-            <div class="row">
-                <div class="cell">ELEPHANTISSOBIG</div>
-                <div class="cell">FOX</div>
-                <div class="cell">GRAPE</div>
-                <div class="cell">HOUSE</div>
+            <div class="row" data-row="1">
+                <div class="cell" data-col="0"><input type="text" value="ELEPHANTISSOBIG"></div>
+                <div class="cell" data-col="1"><input type="text" value="FOX"></div>
+                <div class="cell" data-col="2"><input type="text" value="GRAPE"></div>
+                <div class="cell" data-col="3"><input type="text" value="HOUSE"></div>
             </div>
-            <div class="row">
-                <div class="cell">ICE</div>
-                <div class="cell">JELLY</div>
-                <div class="cell">KIWI</div>
-                <div class="cell">LEMON</div>
+            <div class="row" data-row="2">
+                <div class="cell" data-col="0"><input type="text" value="ICE"></div>
+                <div class="cell" data-col="1"><input type="text" value="JELLY"></div>
+                <div class="cell" data-col="2"><input type="text" value="KIWI"></div>
+                <div class="cell" data-col="3"><input type="text" value="LEMON"></div>
             </div>
-            <div class="row">
-                <div class="cell">MOON</div>
-                <div class="cell">NEST</div>
-                <div class="cell">ORANGE</div>
-                <div class="cell">PEAR</div>
+            <div class="row" data-row="3">
+                <div class="cell" data-col="0"><input type="text" value="MOON"></div>
+                <div class="cell" data-col="1"><input type="text" value="NEST"></div>
+                <div class="cell" data-col="2"><input type="text" value="ORANGE"></div>
+                <div class="cell" data-col="3"><input type="text" value="PEAR"></div>
+            </div>
+        </div>
+        <div id="buttons">
+            <div class="button-row">
+                <button class="color-button" id="yellow"></button>
+                <button class="color-button" id="green"></button>
+                <button class="color-button" id="blue"></button>
+                <button class="color-button" id="purple"></button>
+            </div>
+            <div class="button-row">
+                <button id="mode">Play</button>
+                <button id="clear">Clear</button>
             </div>
         </div>
     </div>
