@@ -12,8 +12,11 @@ class EditMode {
         document.querySelectorAll('.cell').forEach(cell => cell.removeEventListener('click', clickCell));
     }
 
-    clickCell(cell) {
-
+    clear() {
+        let inputs = document.querySelectorAll('.cell input');
+        inputs.forEach(input => {
+            input.value = '';
+        });
     }
 }
 
@@ -36,6 +39,13 @@ class PlayMode {
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', clickCell));
     }
 
+    clear() {
+        let cells = document.querySelectorAll('.cell:not(.ungrouped)');
+        cells.forEach(cell => {
+            cell.classList.remove(...this.colors);
+            cell.classList.add('ungrouped');
+        });
+    }
 }
 
 let mode, playMode, editMode;
@@ -49,6 +59,7 @@ function init() {
     adjustFontSize();
     toggleMode();
     colorButtons();
+    clearButton();
 }
 
 function adjustFontSize() {
@@ -92,8 +103,16 @@ function colorButtons() {
     });
 }
 
+function clearButton() {
+    let button = document.getElementById('clear');
+    button.addEventListener('click', () => {
+        mode.clear();
+    });
+}
+
 function clickCell(e) {
     let cell = e.currentTarget;
+    if (!selectedColor) return;
     if (cell.classList.contains(selectedColor)) {
         cell.classList.remove(selectedColor);
         cell.classList.add('ungrouped');
