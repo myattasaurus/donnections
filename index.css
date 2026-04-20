@@ -26,25 +26,26 @@ body {
 button {
     flex: 1;
     border-radius: 2em;
+    border-width: 0;
 }
 
-.color-button {
-    border: 0.5em solid rgb(239, 237, 227);
+.color-selected {
+    border: 0.25em solid black;
 }
 
-#yellow {
+.yellow {
     background-color: rgb(255, 255, 0);
 }
 
-#green {
+.green {
     background-color: rgb(0, 255, 0);
 }
 
-#blue {
+.blue {
     background-color: rgb(0, 0, 255);
 }
 
-#purple {
+.purple {
     background-color: rgb(128, 0, 128);
 }
 
@@ -67,7 +68,6 @@ button {
 .cell {
     flex: 1;
     height: 100%;
-    background-color: rgb(239, 237, 227);
     color: black;
     border-radius: 7%;
     padding: 10px;
@@ -77,4 +77,8 @@ button {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+}
+
+.ungrouped {
+    background-color: rgb(239, 237, 227);
 }
