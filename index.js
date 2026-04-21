@@ -56,21 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
         modifyCell = makeCellEditable;
     }
     modeButton.addEventListener('click', e => {
-        let modifyCell, getWord;
+        let modifyCell;
         if (modeButton.dataset.mode === 'edit') {
             modeButton.dataset.mode = 'play';
             e.target.innerText = 'Enter Words';
             modifyCell = makeCellColorable;
-            getWord = cell => cell.firstChild.value.toUpperCase().trim();
         } else {
             modeButton.dataset.mode = 'edit';
             e.target.innerText = 'Play';
             modifyCell = makeCellEditable;
-            getWord = cell => cell.firstChild.innerText;
         }
         document.querySelectorAll('.cell').forEach(cell => {
-            cell.appendChild(modifyCell(cell, getWord(cell)));
-            cell.firstChild.remove();
+            setWord(cell, getWord(cell));
+            modifyCell(cell);
         });
         saveData();
     });
@@ -84,16 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set coloring
         cell.classList.add(donnections.colorings[row][col]);
 
-        // Set word and cell properties based on mode
-        let word = donnections.words[row][col];
-        cell.appendChild(modifyCell(cell, word));
+        // Set word
+        setWord(cell, donnections.words[row][col]);
+
+        // Set cell properties based on mode
+        modifyCell(cell);
     });
 
     // Clear button
     let clearButton = document.getElementById('clear');
     clearButton.addEventListener('click', e => {
         if (modeButton.dataset.mode === 'edit') {
-            cells.forEach(cell => cell.firstChild.value = '');
+            cells.forEach(cell => setWord(cell, ''));
         }
         cells.forEach(cell => {
             clearColorClasses(cell);
@@ -112,11 +112,7 @@ function saveData() {
         let col = getCol(cell);
 
         // Set word
-        if (donnections.mode === 'edit') {
-            donnections.words[row][col] = cell.firstChild.value.toUpperCase().trim();
-        } else {
-            donnections.words[row][col] = cell.firstChild.innerText;
-        }
+        donnections.words[row][col] = getWord(cell);
 
         // Set colorings
         for (let color of donnections.colors) {
@@ -130,22 +126,21 @@ function saveData() {
     localStorage.setItem('donnections', JSON.stringify(donnections));
 }
 
-function makeCellEditable(cell, word) {
-    let element = document.createElement('input');
-    element.type = 'text';
-    element.value = word;
-    cell.removeEventListener('click', clickCell);
-    return element;
+function makeCellEditable(cell) {
+    cell.setAttribute('contenteditable', 'true');
+    cell.removeEventListener('click', recolorCell);
+    cell.addEventListener('focus', editCell);
+    return cell;
 }
 
-function makeCellColorable(cell, word) {
-    let element = document.createElement('span');
-    element.textContent = word;
-    cell.addEventListener('click', clickCell);
-    return element;
+function makeCellColorable(cell) {
+    cell.setAttribute('contenteditable', 'false');
+    cell.addEventListener('click', recolorCell);
+    cell.removeEventListener('focus', editCell);
+    return cell;
 }
 
-function clickCell(e) {
+function recolorCell(e) {
     if (!donnections.selectedColor) return;
 
     let cell = e.currentTarget;
@@ -160,8 +155,29 @@ function clickCell(e) {
     saveData();
 }
 
+function editCell(e) {
+    let cell = e.currentTarget;
+
+    let range = document.createRange();
+    range.selectNodeContents(cell);
+    let selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+
 function clearColorClasses(cell) {
     cell.classList.remove(...donnections.colors);
+}
+
+function getWord(cell) {
+    return cell.innerText.toUpperCase().trim();
+}
+
+function setWord(cell, word) {
+    if (!word || word.trim() === '') {
+        word = '&nbsp;';
+    }
+    cell.innerHTML = word;
 }
 
 function setColoring(cell, color) {
