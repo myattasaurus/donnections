@@ -212,7 +212,7 @@ function adjustFontSize(e) {
     do {
         cell.style.fontSize = `${fontSize}vmin`;
         fontSize -= 0.1;
-    } while (paddedMaxTextWidth(cell.scrollWidth) > cellMaxTextWidth && fontSize > 0);
+    } while (cell.scrollWidth > cell.clientWidth && fontSize > 0);
 }
 
 function recolorCell(e) {
