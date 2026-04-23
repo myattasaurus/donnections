@@ -1,3 +1,9 @@
+:root {
+    --width: 90vmin;
+    --gap: 1.5vmin;
+    --cell-width: calc((var(--width) / 4 - 3 * var(--gap)) / 4);
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -18,8 +24,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 70vmin;
-    width: 90vmin;
-    gap: 1.5vmin;
+    width: var(--width);
+    gap: var(--gap);
     margin: 0 auto;
 }
 
@@ -56,8 +62,8 @@ button {
 .button-row {
     display: flex;
     flex-direction: row;
-    gap: 1.5vmin;
-    width: 90vmin;
+    width: var(--width);
+    gap: var(--gap);
     height: 10vmin;
     padding-top: 1vmin;
     padding-bottom: 1vmin;
@@ -66,24 +72,23 @@ button {
 .row {
     display: flex;
     flex-direction: row;
-    gap: 1.5vmin;
+    gap: var(--gap);
     height: 25%;
 }
 
 .cell {
     flex: 1;
-    width: 100%;
+    width: var(--cell-width);
     height: 100%;
     color: black;
     border-radius: 7%;
-    padding: 0.5rem;
+    padding: calc(0.1 * var(--cell-width));
     text-align: center;
     font-family: Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    font-size: x-small;
     font-weight: bold;
 }
 

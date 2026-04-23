@@ -1,6 +1,31 @@
 let donnections;
 
+// Style variables (copied from CSS for use in JS)
+let width = 90;
+let gap = 1.5;
+let vmin, cellWidth, cellPadding, cellFontSize, cellMaxTextWidth;
+
+window.addEventListener('resize', onWindowResize);
+
+function onWindowResize() {
+    vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
+    let widthPixels = width * vmin;
+    let gapPixels = gap * vmin;
+
+    cellWidth = Math.floor((widthPixels - 3 * gapPixels) / 4);
+    cellPadding = 0 * cellWidth;
+    cellMaxTextWidth = paddedMaxTextWidth(cellWidth);
+    console.log('Width:', widthPixels, 'Gap:', gapPixels, 'Cell width:', cellWidth, 'Cell padding:', cellPadding, 'Cell max text width:', cellMaxTextWidth);
+}
+
+function paddedMaxTextWidth(thingWidth) {
+    return Math.floor(thingWidth - 2 * cellPadding);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Set style variables
+    onWindowResize();
+
     // Model
     donnections = localStorage.getItem('donnections');
     if (!donnections) {
@@ -84,12 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set word
         setWord(cell, donnections.words[row][col]);
+        adjustFontSize({ target: cell });
 
         // Set cell properties based on mode
         modifyCell(cell);
-
-        // Add event listener to tab to next cell
-        cell.addEventListener('keydown', onCellKeydown);
     });
 
     // Clear button
@@ -135,6 +158,8 @@ function makeCellEditable(cell) {
     cell.setAttribute('enterkeyhint', isFinalCell(cell) ? 'go' : 'next');
     cell.removeEventListener('click', recolorCell);
     cell.addEventListener('focus', editCell);
+    cell.addEventListener('input', adjustFontSize);
+    cell.addEventListener('keydown', onCellKeydown);
     return cell;
 }
 
@@ -144,6 +169,8 @@ function makeCellColorable(cell) {
     cell.removeAttribute('enterkeyhint');
     cell.addEventListener('click', recolorCell);
     cell.removeEventListener('focus', editCell);
+    cell.removeEventListener('input', adjustFontSize);
+    cell.removeEventListener('keydown', onCellKeydown);
     return cell;
 }
 
@@ -154,32 +181,40 @@ function onCellKeydown(e) {
         if (isFinalCell(cell)) {
             document.getElementById('mode').click();
         } else {
-            focusNextCell(cell);
+            // Focus next cell
+            let row = getRow(cell);
+            let col = getCol(cell);
+
+            let next = 4 * row + col + 1;
+            if (next >= 16) {
+                next = 0;
+            }
+            let nextRow = Math.floor(next / 4);
+            let nextCol = next % 4;
+
+            let nextCell = document.querySelector(
+                `.row[data-row="${nextRow}"] .cell[data-col="${nextCol}"]`
+            );
+
+            if (nextCell) {
+                nextCell.focus();
+            } else {
+                cell.blur();
+            }
             saveData();
         }
     }
 }
 
-function focusNextCell(cell) {
-    const row = getRow(cell);
-    const col = getCol(cell);
-
-    let next = 4 * row + col + 1;
-    if (next >= 16) {
-        next = 0;
-    }
-    let nextRow = Math.floor(next / 4);
-    let nextCol = next % 4;
-
-    const nextCell = document.querySelector(
-        `.row[data-row="${nextRow}"] .cell[data-col="${nextCol}"]`
-    );
-
-    if (nextCell) {
-        nextCell.focus();
-    } else {
-        cell.blur();
-    }
+function adjustFontSize(e) {
+    console.log(e);
+    let cell = e.target;
+    let fontSize = 3.5;
+    do {
+        cell.style.fontSize = `${fontSize}vmin`;
+        console.log(paddedMaxTextWidth(cell.scrollWidth), cellMaxTextWidth);
+        fontSize -= 0.1;
+    } while (paddedMaxTextWidth(cell.scrollWidth) > cellMaxTextWidth && fontSize > 0);
 }
 
 function recolorCell(e) {
@@ -198,6 +233,7 @@ function recolorCell(e) {
 }
 
 function editCell(e) {
+    console.log(e);
     let cell = e.currentTarget;
 
     if (getWord(cell) !== '') {
