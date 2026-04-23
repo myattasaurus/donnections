@@ -128,6 +128,8 @@ function saveData() {
 
 function makeCellEditable(cell) {
     cell.setAttribute('contenteditable', 'true');
+    cell.setAttribute('inputmode', 'text');
+    cell.setAttribute('enterkeyhint', 'next');
     cell.removeEventListener('click', recolorCell);
     cell.addEventListener('focus', editCell);
     return cell;
@@ -135,6 +137,8 @@ function makeCellEditable(cell) {
 
 function makeCellColorable(cell) {
     cell.setAttribute('contenteditable', 'false');
+    cell.removeAttribute('inputmode');
+    cell.removeAttribute('enterkeyhint');
     cell.addEventListener('click', recolorCell);
     cell.removeEventListener('focus', editCell);
     return cell;
