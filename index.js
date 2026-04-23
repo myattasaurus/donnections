@@ -132,7 +132,7 @@ function saveData() {
 function makeCellEditable(cell) {
     cell.setAttribute('contenteditable', 'true');
     cell.setAttribute('inputmode', 'text');
-    cell.setAttribute('enterkeyhint', 'next');
+    cell.setAttribute('enterkeyhint', isFinalCell(cell) ? 'go' : 'next');
     cell.removeEventListener('click', recolorCell);
     cell.addEventListener('focus', editCell);
     return cell;
@@ -149,9 +149,14 @@ function makeCellColorable(cell) {
 
 function onCellKeydown(e) {
     if (e.key === 'Enter') {
+        let cell = e.currentTarget;
         e.preventDefault();
-        focusNextCell(e.currentTarget);
-        saveData();
+        if (isFinalCell(cell)) {
+            document.getElementById('mode').click();
+        } else {
+            focusNextCell(cell);
+            saveData();
+        }
     }
 }
 
@@ -221,6 +226,10 @@ function setWord(cell, word) {
 
 function setColoring(cell, color) {
     cell.classList.add(color);
+}
+
+function isFinalCell(cell) {
+    return getRow(cell) === 3 && getCol(cell) === 3;
 }
 
 function getRow(cell) {
