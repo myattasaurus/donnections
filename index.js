@@ -15,7 +15,7 @@ function onWindowResize() {
     cellWidth = Math.floor((widthPixels - 3 * gapPixels) / 4);
     cellPadding = 0 * cellWidth;
     cellMaxTextWidth = paddedMaxTextWidth(cellWidth);
-    console.log('Width:', widthPixels, 'Gap:', gapPixels, 'Cell width:', cellWidth, 'Cell padding:', cellPadding, 'Cell max text width:', cellMaxTextWidth);
+    // console.log('Width:', widthPixels, 'Gap:', gapPixels, 'Cell width:', cellWidth, 'Cell padding:', cellPadding, 'Cell max text width:', cellMaxTextWidth);
 }
 
 function paddedMaxTextWidth(thingWidth) {
@@ -207,12 +207,10 @@ function onCellKeydown(e) {
 }
 
 function adjustFontSize(e) {
-    console.log(e);
     let cell = e.target;
     let fontSize = 3.5;
     do {
         cell.style.fontSize = `${fontSize}vmin`;
-        console.log(paddedMaxTextWidth(cell.scrollWidth), cellMaxTextWidth);
         fontSize -= 0.1;
     } while (paddedMaxTextWidth(cell.scrollWidth) > cellMaxTextWidth && fontSize > 0);
 }
@@ -233,7 +231,6 @@ function recolorCell(e) {
 }
 
 function editCell(e) {
-    console.log(e);
     let cell = e.currentTarget;
 
     if (getWord(cell) !== '') {
