@@ -89,3 +89,7 @@ button {
 .cell:not([contenteditable="true"]) {
     cursor: default;
 }
+
+.cell[contenteditable="true"] {
+    text-transform: uppercase;
+}
