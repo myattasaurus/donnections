@@ -158,11 +158,13 @@ function recolorCell(e) {
 function editCell(e) {
     let cell = e.currentTarget;
 
-    let range = document.createRange();
-    range.selectNodeContents(cell);
-    let selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
+    if (getWord(cell) !== '') {
+        let range = document.createRange();
+        range.selectNodeContents(cell);
+        let selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
 }
 
 function clearColorClasses(cell) {
