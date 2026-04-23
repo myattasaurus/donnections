@@ -87,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set cell properties based on mode
         modifyCell(cell);
+
+        // Add event listener to tab to next cell
+        cell.addEventListener('keydown', onCellKeydown);
     });
 
     // Clear button
@@ -142,6 +145,36 @@ function makeCellColorable(cell) {
     cell.addEventListener('click', recolorCell);
     cell.removeEventListener('focus', editCell);
     return cell;
+}
+
+function onCellKeydown(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        focusNextCell(e.currentTarget);
+        saveData();
+    }
+}
+
+function focusNextCell(cell) {
+    const row = getRow(cell);
+    const col = getCol(cell);
+
+    let next = 4 * row + col + 1;
+    if (next >= 16) {
+        next = 0;
+    }
+    let nextRow = Math.floor(next / 4);
+    let nextCol = next % 4;
+
+    const nextCell = document.querySelector(
+        `.row[data-row="${nextRow}"] .cell[data-col="${nextCol}"]`
+    );
+
+    if (nextCell) {
+        nextCell.focus();
+    } else {
+        cell.blur();
+    }
 }
 
 function recolorCell(e) {
